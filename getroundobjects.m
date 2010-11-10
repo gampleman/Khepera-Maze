@@ -54,28 +54,9 @@ for k = 1:length(B)
   if metric > threshold
     areas = object_coords(3, :);
     centroid = stats(k).Centroid;
-    if area > min(areas)
-      [v, index] = min(areas);
-      object_coords(:, index) = [centroid(2), centroid(1), area];
-    end
+    [a b] = size(object_coords);
+    object_coords(:, b+1) = [centroid(2), centroid(1), area];
   end
 end
   
-  
-  object_coords = object_coords(1:2, :);
-  new_object_coords = zeros(2, 4);
-  % top
-  [v, index] = min(object_coords(2, :));
-  new_object_coords(:, 1) = object_coords(:, index);
-  % right
-  [v, index] = max(object_coords(1, :));
-  new_object_coords(:, 2) = object_coords(:, index);
-  % bottom
-  [v, index] = max(object_coords(2, :));
-  new_object_coords(:, 3) = object_coords(:, index);
-  % left
-  [v, index] = min(object_coords(1, :));
-  new_object_coords(:, 4) = object_coords(:, index);
-  
-  object_coords = new_object_coords';
 end %  function
