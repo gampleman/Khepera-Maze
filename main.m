@@ -1,21 +1,30 @@
 %while true
   % get image of the world
-  I0 = take_snap();
+  IM1 = imread('world2010.png', 'png');
+  
   % use the jacobean transform
-  I1 = jacobean(I0, 400, 260, getroundobjects(~im2bw(I0), 0.5));
-  % get green thing -> robot
-  green_thresh = 200/255;
-  red_thresh = 40/255;
-[xs, ys] = find(I1(:, :, 2) > green_thresh & I1(:, :, 1) > red_thresh);
-  robot = [mean(xs), mean(ys)]
-    figure(1)
-    imshow(I0)
-    figure(2)
-    imshow(I1)
-    I2 = zeros(size(I1));
-    I2(xs, ys, :) = 1;
-    figure(3)
-    imshow(I2)
+  IM2 = jacobean(IM1, 260,400, getroundobjects(~im2bw(IM1, graythresh(IM1)), 0.5));
+  
+  % find the robot.
+  red_thresh = 20/255;
+  green_thresh = 220/255;
+  blue_thresh = 98/255;
+  [a,b] = find(IM2(:,:,1) < red_thresh & IM2(:,:,2) > green_thresh & IM2(:,:,3) < blue_thresh);
+  IM3 = zeros(size(IM2));
+  IM3(a, b, :) = 1;
+  imshow(IM3)
+  robot = [mean(b), mean(a)]
+  hold on
+  plot(robot(1), robot(2), 'ro')
+  
+  %   figure(1)
+  %   imshow(IM1)
+  %   figure(2)
+  %   imshow(IM2)
+  %   IM3 = zeros(size(IM2));
+  %   IM3(xs, ys, :) = 1;
+  %   figure(3)
+  %   imshow(IM3)
   % find the target point
   
   % plan path
