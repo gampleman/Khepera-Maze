@@ -15,12 +15,9 @@
     hold on
     text(robot(1), robot(2), 'Robot');
     plot(robot(2), robot(1), 'ko');
-    I2 = zeros(size(I1));
-    I2(xs, ys, :) = 1;
-    figure(3)
-    imshow(I2)
+   
   % find the target point
-  
+  target = getendpoints(I1);
   % plan path
   
   % take next segment of path and send servoing signal
