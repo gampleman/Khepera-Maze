@@ -37,7 +37,7 @@ for r = 1 : height
     end
   end
 end
-% outimage = outimage / 255;
+outimage = outimage / 255;
 
 end %  function
 
