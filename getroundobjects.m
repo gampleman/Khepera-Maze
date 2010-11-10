@@ -30,9 +30,9 @@ bw = bwareaopen(bw,30);
 stats = regionprops(L,'Area','Centroid');
 
 
-object_coords = zeros(3, 4);
+object_coords = zeros(3, 1);
 
-
+i = 0;
 % loop over the boundaries
 for k = 1:length(B)
 
@@ -55,7 +55,8 @@ for k = 1:length(B)
     areas = object_coords(3, :);
     centroid = stats(k).Centroid;
     [a b] = size(object_coords);
-    object_coords(:, b+1) = [centroid(2), centroid(1), area];
+    object_coords(:, i) = [centroid(2), centroid(1), area];
+    i = i + 1;
   end
 end
   
