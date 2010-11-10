@@ -8,13 +8,13 @@ function [End, Start] = getendpoints(I)
 
 obj = getroundobjects(~im2bw(I), 0.5);
 
-[w h] = size(obj);
+[w h] = size(obj)
 
 [e, ind] = min(obj(3, :));
 End = obj(1:2, ind);
 obj(3, ind) = 100000;
 
-if w == 6
+if h == 6
   [e, ind] = min(obj(3, :));
   Start = obj(1:2, ind);
   obj(3, ind) = 100000;
