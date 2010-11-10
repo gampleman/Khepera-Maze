@@ -11,7 +11,7 @@ function outimage = jacobean(inimage, width, height, XY)
 
 %UV=zeros(4,2);
 %XY=zeros(4,2);
-UV=[[1,1]',[1,width]',[height,width]',[height,1]']';    % target points
+UV=[[30,30]',[30,width-30]',[height-30,width-30]',[height-30,30]']';    % target points
 %XY=[[34,370]',[92,510]',[241,252]',[143,132]']';    % source points
 
 P = esthomog(UV,XY,4);    % estimate homography mapping UV to XY
