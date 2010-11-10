@@ -32,7 +32,7 @@ stats = regionprops(L,'Area','Centroid');
 
 object_coords = zeros(3, 1);
 
-i = 0;
+i = 1;
 % loop over the boundaries
 for k = 1:length(B)
 
@@ -59,5 +59,5 @@ for k = 1:length(B)
     i = i + 1;
   end
 end
-  
+
 end %  function
