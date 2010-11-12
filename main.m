@@ -23,7 +23,9 @@ I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
 [w h] = size(I2);
 drivebot(20);
 
-while scanline(I2, robot(2), 20)
+dimension = 2;
+
+while scanline(I2, robot(2), 20, dimension)
   
   I0 = take_snap();
 
@@ -31,7 +33,22 @@ while scanline(I2, robot(2), 20)
   I1 = jacobean(I0, 400, 260, getcorners(~im2bw(I0), 0.5));
   old_robot = robot;
   robot = getrobot(I1);
-  visualturn(old_robot, robot, 2);
+  visualturn(old_robot, robot, dimension);
+  %pause(0.1);
+end
+
+drivebot(-20, 20, 1);
+dimension = 1;
+
+while scanline(I2, robot(2), 20, dimension)
+  
+  I0 = take_snap();
+
+  % use the jacobean transform
+  I1 = jacobean(I0, 400, 260, getcorners(~im2bw(I0), 0.5));
+  old_robot = robot;
+  robot = getrobot(I1);
+  visualturn(old_robot, robot, dimension);
   %pause(0.1);
 end
 
