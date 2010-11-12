@@ -8,7 +8,7 @@ function [End, Start] = getendpoints(I)
 
 obj = getroundobjects(~im2bw(I), 0.5);
 
-[w h] = size(obj)
+[w h] = size(obj);
 
 [e, ind] = min(obj(3, :));
 End = obj(1:2, ind);
