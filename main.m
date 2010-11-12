@@ -25,7 +25,7 @@ drivebot(20);
 
 dimension = 2;
 
-while scanline(I2, robot(2), 20, dimension)
+while scanline(I2, robot(dimension), 20, dimension)
   
   I0 = take_snap();
 
@@ -40,7 +40,7 @@ end
 drivebot(-20, 20, 1);
 dimension = 1;
 
-while scanline(I2, robot(2), 20, dimension)
+while scanline(I2, robot(dimension), 20, dimension)
   
   I0 = take_snap();
 
