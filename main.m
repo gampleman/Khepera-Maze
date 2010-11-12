@@ -21,19 +21,17 @@ target = getendpoints(I1);
 % plan path
 I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
 [w h] = size(I2);
- 
+drivebot(20);
+
 while scanline(I2, robot(2), 20)
-  drivebot(20);
-  visualturn(old_robot, robot, 1);
   
   I0 = take_snap();
-  
 
   % use the jacobean transform
   I1 = jacobean(I0, 400, 260, getcorners(~im2bw(I0), 0.5));
-  
-  robot = getrobot(I1);
   old_robot = robot;
+  robot = getrobot(I1);
+  visualturn(old_robot, robot, 2);
   %pause(0.1);
 end
 
