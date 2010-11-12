@@ -13,6 +13,6 @@ end
 vl = v * (1 + (alpha - 1.5 * pi) / (0.5 * pi));
 vr = v * (1 + alpha / (0.5 * pi));
 
-drivebot(vr, vl, 0.5);
+drivebot(vl, vr, 0.5);
 
 end %  function
