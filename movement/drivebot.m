@@ -17,7 +17,7 @@ function drivebot(lspeed, varargin)
       error('drivebot:TooManyInputs requires at most 2 optional inputs');
   end
   
-  send_command(strcat('D,', num2str(lspeed), ',', num2str(rspeed)));
+  send_command(strcat('D,', num2str(round(lspeed)), ',', num2str(round(rspeed))));
   read_command;
   pause(pausetime);
 
