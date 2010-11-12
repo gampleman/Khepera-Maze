@@ -71,9 +71,9 @@
   hold on;
   plot(pos, robot(2), 'ro');
   stopbot;
-  send_command('D,-20,20');
-  read_command;
-  pause(3.8);
+  drivebot(-20, 20, 3.8)
+  
+  
   drivebot(20, 40);
   stopbot;
   hold off;
