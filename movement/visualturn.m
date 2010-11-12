@@ -1,15 +1,19 @@
 function visualturn(old, new, dimension)
 
-a = old(dimension) - new(dimension)
-c = sqrt((old(1) - new(1))^2 + (old(2) - new(2))^2)
+a = old(dimension) - new(dimension);
+c = sqrt((old(1) - new(1))^2 + (old(2) - new(2))^2);
 
 other_dimension = 3 - dimension;
-
-alpha = acos(a / c);
+if dimension == 1
+  alpha = pi - acos(a / c);
+else
+  alpha = acos(a / c);
+end
 v = 10;
 
 if alpha < 0.0873
   alpha = 0;
+  v = 20;
 end
 
 

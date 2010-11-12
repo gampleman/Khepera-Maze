@@ -21,7 +21,7 @@ target = getendpoints(I1);
 % plan path
 I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
 [w h] = size(I2);
-drivebot(20);
+%drivebot(20);
 
 dimension = 2;
 
