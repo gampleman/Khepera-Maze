@@ -3,7 +3,7 @@ function visualturn(old, new, dimension)
 a = old(dimension) - new(dimension)
 c = sqrt((old(1) - new(1))^2 + (old(2) - new(2))^2)
 
-alpha = acos(c / a);
+alpha = acos(a / c);
 v = 10;
 
 
