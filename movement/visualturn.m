@@ -17,7 +17,9 @@ else
 end
 v = 10;
 
-if alpha < 0.0873 || alpha > -0.0873
+alpha
+
+if abs(alpha) < 0.0873
   alpha = 0;
   v = 20;
 end
