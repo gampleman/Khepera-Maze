@@ -1,60 +1,40 @@
-% get image of the world
-I0 = take_snap();
-%unix('mplayer tv:// -tv driver=v4l:width=640:height=480:device=/dev/video0 -frames 5 -vo jpeg');
-%I0 = imread('00000003.jpg');
-
-% use the jacobean transform
-I1 = jacobean(I0, 400, 260, getcorners(~im2bw(I0), 0.5));
-
-%[target, start] = getendpoints(I1);
-%if((target(2) - start(2))^2 + (target(1) - start(1))^2 > 190^2)
-%  I1 = jacobean(I0, 400, 260, getcorners(~im2bw(I0), 0.5));
-%  [target, start] = getendpoints(I1);
-%end
-
-
-
-robot = getrobot(I1);
+% setup
+robot = [0 0];
+updaterobot;
 old_robot = robot;
+decay = 1;
+robot_size = 20;
 % find the target point
 target = getendpoints(I1);
-% plan path
+% create maze map
 I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
-[w h] = size(I2);
-%drivebot(20);
 
+% drive horizontal till opening
 dimension = 2;
-
-while scanline(I2, robot(dimension), 20, dimension)
-  
-  I0 = take_snap();
-
-  % use the jacobean transform
-  I1 = jacobean(I0, 400, 260, getcorners(~im2bw(I0), 0.5));
-  old_robot = robot;
-  robot = getrobot(I1);
+while scanline(I2, robot(dimension), robot_size, dimension)
+  updaterobot;
   visualturn(old_robot, robot, dimension);
-  %pause(0.1);
 end
 
-drivebot(-20, 20, 1);
+% drive vertical till opening
 dimension = 1;
-
-while scanline(I2, robot(dimension), 20, dimension)
-  
-  I0 = take_snap();
-
-  % use the jacobean transform
-  I1 = jacobean(I0, 400, 260, getcorners(~im2bw(I0), 0.5));
-  old_robot = robot;
-  robot = getrobot(I1);
+while scanline(I2, robot(dimension), robot_size, dimension)
+  updaterobot;
   visualturn(old_robot, robot, dimension);
-  %pause(0.1);
 end
 
+% drive horizontal till close enough to target point
+dimension = 2;
+while ((target(2) - robot(2))^2 + (target(1) - robot(1))^2 > robot_size^2)
+  updaterobot;
+  visualturn(old_robot, robot, dimension);
+end
+
+% we're done.
 stopbot;
-drivebot(-20, 20, 3.8)
 
 
-drivebot(20, 40);
-stopbot;
+
+%drivebot(-20, 20, 3.8)
+%drivebot(20, 40);
+%stopbot;
