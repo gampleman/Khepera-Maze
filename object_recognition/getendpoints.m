@@ -6,7 +6,7 @@ function [End, varargout] = getendpoints(I)
 %   
 %   Created by Jakub Hampl on 2010-11-10.
 
-obj = getroundobjects(~im2bw(I), 0.5);
+obj = getroundobjects(~im2bw(I, graythresh(I)), 0.6)
 
 [w h] = size(obj);
 
@@ -14,9 +14,11 @@ obj = getroundobjects(~im2bw(I), 0.5);
 End = obj(1:2, ind);
 obj(3, ind) = 100000;
 
+
 if h == 6 && nargout == 2
   [e, ind] = min(obj(3, :));
-  varargout(1) = obj(1:2, ind);
+  start = obj(1:2, ind);
+  varargout{1} = start;
   obj(3, ind) = 100000;
 end 
 

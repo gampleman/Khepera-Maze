@@ -9,7 +9,7 @@ round_objects(:, 3) = sqrt(round_objects(:, 3) / pi);
 [a,index] = sort(round_objects(:,3), 1, 'descend');
 corners = round_objects(index(1:4), :);
 
-corners = corners(:,(1:2))';
+corners = corners(:,(1:2))'
 
 new_corners = zeros(2, 4);
 % top
