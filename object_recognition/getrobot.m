@@ -14,7 +14,7 @@ else
 l = getlargest(~im2bw(I, graythresh(I)) - ~im2bw(varargin{1}, graythresh(varargin{1})), 0);
 [xs, ys] = find(l == 1);
 end
-robot = [mean(xs), mean(ys)];
+robot = [mean(xs), mean(ys)]
 
 
 

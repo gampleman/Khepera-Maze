@@ -15,7 +15,7 @@ End = obj(1:2, ind);
 obj(3, ind) = 100000;
 
 
-if h == 6 && nargout == 2
+if h >= 6 && nargout == 2
   [e, ind] = min(obj(3, :));
   start = obj(1:2, ind);
   varargout{1} = start;

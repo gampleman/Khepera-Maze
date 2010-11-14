@@ -1,5 +1,5 @@
 function visualturn(old, new, dimension, direction)
-%% See images/robot-control-diagram for explanation of this function
+% See images/robot-control-diagram for explanation of this function
 global decay;
 
 a = old(dimension) - new(dimension);
@@ -17,8 +17,8 @@ else
     alpha = alpha * -1;
   end
 end
-V = 10;
-decay;
+V = 2;
+%decay
 
 decay = decay * 0.9;
 
@@ -29,11 +29,11 @@ if abs(alpha) < 0.0873
 end
 
 
-%vl = V * (1 + decay * alpha / (-0.5 * pi));
-%vr = V * (1 + decay * alpha / (0.5 * pi));
+vl = V * (1 + decay * alpha / (-1 * pi));
+vr = V * (1 + decay * alpha / ( pi));
 
-vl = V * (1 + alpha / (-0.5 * pi));
-vr = V * (1 + alpha / (0.5 * pi));
+%vl = V * (1 + alpha / (-0.5 * pi));
+%vr = V * (1 + alpha / (0.5 * pi));
 
 drivebot(vl, vr, 0.1);
 
