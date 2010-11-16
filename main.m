@@ -47,7 +47,8 @@ decay = 2;
 visualturn(old_robot, robot, dimension, 2);
 while scanline(I2, robot(dimension), robot_size, dimension)
   updaterobot;
-  visualturn(old_robot, robot, dimension, 2);
+  %visualturn(old_robot, robot, dimension, 2);
+  pid(old_robot, robot, dimension, 2);
 end
 
 
@@ -57,7 +58,8 @@ decay = 2;
 %while scanline(I2, robot(dimension), robot_size, dimension) && t < 30
 while ~(robot(1) > target(1) - robot_size && robot(1) < target(1) + robot_size)
   updaterobot;
-  visualturn(old_robot, robot, dimension, 1);
+  %visualturn(old_robot, robot, dimension, 1);
+  pid(old_robot, robot, dimension, 1);
 end
 
 % drive horizontal till close enough to target point
@@ -65,7 +67,8 @@ dimension = 2
 decay = 2;
 while ((target(2) - robot(2))^2 + (target(1) - robot(1))^2 > robot_size^2)
   updaterobot;
-  visualturn(old_robot, robot, dimension, 1);
+  %visualturn(old_robot, robot, dimension, 1);
+  pid(old_robot, robot, dimension, 1);
 end
 
 % we're done.
