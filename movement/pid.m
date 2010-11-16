@@ -7,7 +7,10 @@ function pid(old, new, dimension, direction)
 %   Created by Jakub Hampl on 2010-11-16.
 
 
-global previous_error, l_integral, r_integral, environment;
+global previous_error
+global l_integral;
+global r_integral;
+global environment;
 
 Kp = 1;
 Kd = 0;
@@ -37,22 +40,24 @@ else
 end
 
 
-dt = 0.1;
+dt = 0.2;
 
-l_integral = l_integral + (-alpha*dt);
-l_derivative = (-alpha - previous_error)/dt;
-l_output = (Kp* -alpha) + (Ki*l_integral) + (Kd*l_derivative)
+l_error = alpha / (-1 * pi);
+l_integral = l_integral + (-l_error*dt);
+l_derivative = (-l_error - previous_error / -pi)/dt;
+l_output = (Kp* -l_error) + (Ki*l_integral) + (Kd*l_derivative)
 
+r_error = alpha / ( pi);
+r_integral = r_integral + (r_error*dt);
+r_derivative = (r_error - previous_error/ pi)/dt;
+r_output = (Kp*r_error) + (Ki*r_integral) + (Kd*r_derivative)
 
-r_integral = r_integral + (alpha*dt);
-r_derivative = (alpha - previous_error)/dt;
-r_output = (Kp*alpha) + (Ki*r_integral) + (Kd*r_derivative)
 previous_error = alpha;
 
 vl = V * l_output;
 vr = V * r_output;
 
-drivebot(vl, vr, dt);
+drivebot(vl, vr, 0.1);
 
 
 end %  function
