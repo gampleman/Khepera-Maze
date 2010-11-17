@@ -4,7 +4,7 @@ global environment;
 if strcmp(environment, 'webots')
 string = sprintf('Z');
 send_command(string);
-ret = read_command;
+read_command;
 I = imread('/tmp/snapshot.ppm');
 else
 unix('mplayer tv:// -tv driver=v4l:width=640:height=480:device=/dev/video0 -frames 5 -vo jpeg &> /dev/null');

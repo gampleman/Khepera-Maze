@@ -2,10 +2,19 @@
 %
 
 global environment;
-global decay;
+global previous_error;
+global l_integral;
+global r_integral;
 %environment = 'webots';
 
+robot = [0 0];
+previous_error = 0;
+l_integral = 0;
+r_integral = 0;
+
+stopbot;
 if strcmp(environment, 'real world')
+robot_size = 30;
  I0 = take_pic();
  pause(0.1);
  jac_dimensions = [260, 400];
@@ -20,22 +29,22 @@ if strcmp(environment, 'real world')
    [target, start] = getendpoints(I3);
    jac_dimensions = [400 260];
  end
- I2 = imclose(~im2bw(I3, graythresh(I3)), strel('disk', 10));
+  I2 = imclose(~im2bw(I3, graythresh(I3)), strel('disk', 10));
   input('Place da robot, man!')
 else
+robot_size = 10;
   jac_dimensions = [400, 260];
   updaterobot;
   I3 = [];
   I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
 end
-robot = [0 0];
+
 updaterobot;
 old_robot = robot;
 old_robot(1) = old_robot(1) - 10;
 decay = 1;
-robot_size = 10;
 % find the target point
-target = getendpoints(I1);
+target = getendpoints(I1)
 % create maze map
 %I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
 %I2 = imclose(~im2bw(I1, graythresh(I1)), strel('disk', 10));
@@ -44,23 +53,41 @@ target = getendpoints(I1);
 robot
 dimension = 2
 decay = 2;
+dest = [robot(1) (robot(2)-300)];
 visualturn(old_robot, robot, dimension, 2);
+imshow(I2); hold on;
+plot(dest(2), dest(1), 'ro');  
+
 while scanline(I2, robot(dimension), robot_size, dimension)
   updaterobot;
   %visualturn(old_robot, robot, dimension, 2);
-  pid(old_robot, robot, dimension, 2);
+  pid(old_robot, robot, dest , dimension, 2);
+  %drivebot(30, 0.3);
+  plot(robot(2), robot(1), 'go');
 end
 
+%drivebot(-20, 20, 3.3);
 
 % drive vertical till opening
 dimension = 1
 decay = 2;
+dest = [target(1) (target(2) - 220)];
+plot(dest(2), dest(1), 'ro');  
+
 %while scanline(I2, robot(dimension), robot_size, dimension) && t < 30
 while ~(robot(1) > target(1) - robot_size && robot(1) < target(1) + robot_size)
   updaterobot;
   %visualturn(old_robot, robot, dimension, 1);
-  pid(old_robot, robot, dimension, 1);
+  pid(old_robot, robot, dest, dimension, 1);
+  %drivebot(30, 0.3);
+  plot(robot(2), robot(1), 'go');
+
 end
+
+%drivebot(-20, 20, 3.3);
+
+
+plot(target(2), target(1), 'ro');  
 
 % drive horizontal till close enough to target point
 dimension = 2
@@ -68,8 +95,13 @@ decay = 2;
 while ((target(2) - robot(2))^2 + (target(1) - robot(1))^2 > robot_size^2)
   updaterobot;
   %visualturn(old_robot, robot, dimension, 1);
-  pid(old_robot, robot, dimension, 1);
+  pid(old_robot, robot, target', dimension, 1);
+  
+  plot(robot(2), robot(1), 'go');
 end
+  %drivebot(30,0.3);
+
+
 
 % we're done.
 stopbot;
