@@ -25,21 +25,31 @@ Kd = 0.3;
 a = new - old;
 b = destination - new;
 
-alpha = acos(a*b' / ((a*a')*(b*b')));
-a_d = alpha * 180 / pi
+%alpha = acos(a*b' / ((a*a')*(b*b')));
+%a_d = alpha * 180 / pi
 %costheta = dot(a,b)/(norm(a)*norm(b));
 %alpha = atan2(a(1)*b(2)-a(1)*b(1),a(1)*b(1)+a(2)*b(2));
 %alpha = atan2(a(1) - b(1), a(2) - b(2));
 
-%beta = atan2(a(1), a(2));
-%gamma = atan2(b(1), b(2));
+beta = atan2(a(1), a(2));
+gamma = atan2(b(1), b(2));
 %delta = (beta - gamma) * 180/pi
-%alpha = beta - gamma;
+alpha = beta - gamma;
+
+if alpha > pi
+  alpha = 2*pi - alpha;
+end
+
+alpha_deg = alpha * 180/pi
+
 %alpha = atan2(b(1) - a(1), b(2) - a(2));
 
 %deg_alpha = alpha * 180/pi
 %if abs(alpha) > 0.8
 %plot(10 * cos(alpha) + new(2), 10 * sin(alpha) + new(1), 'bo');
+
+line([new(1), 10 * cos(-gamma) + new(1)], [new(2), 10 * sin(gamma) + new(2)], 'Color', 'g');
+
 %end
 
 %alpha = acos(costheta);
