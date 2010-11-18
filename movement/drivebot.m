@@ -16,7 +16,12 @@ function drivebot(lspeed, varargin)
     otherwise
       error('drivebot:TooManyInputs requires at most 2 optional inputs');
   end
-  
+
+if isnan(lspeed)
+      pause(pausetime);
+      return;
+end   
+
   if lspeed > 0
     lspeed = min(40, lspeed);
   else
