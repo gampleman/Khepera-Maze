@@ -40,6 +40,10 @@ if alpha > pi
   alpha = 2*pi - alpha;
 end
 
+if alpha < -pi
+  alpha = 2*pi + alpha;
+end
+
 alpha_deg = alpha * 180/pi
 
 %alpha = atan2(b(1) - a(1), b(2) - a(2));
