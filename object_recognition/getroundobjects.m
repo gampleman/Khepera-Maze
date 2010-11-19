@@ -1,17 +1,14 @@
 function object_coords = getroundobjects(bw, threshold)
-%   GETROUNDOBJECTS   Short description
-%     [OBJECT_COORDS] = GETROUNDOBJECTS(I, THRESHOLD)
-% 
-%   Long description
-%   
-%   Created by Jakub Hampl on 2010-11-08.
-
-
+%GETROUNDOBJECTS Retun an array with the round objects coordinates.
+%
+%   [OBJECT_COORDS] = GETROUNDOBJECTS(I, THRESHOLD) Takes an image and 
+%   returns an array with the coordinates of the center of the round 
+%   objects. An object is classified as a round object by a given threshold.
 
 % remove all object containing fewer than 30 pixels
 bw = bwareaopen(bw,30);
 
-% fill a gap in the pen's cap
+% fill a gap 
 %se = strel('disk',2);
 %bw = imclose(bw,se);
 
@@ -20,20 +17,10 @@ bw = bwareaopen(bw,30);
 %bw = imfill(bw,'holes');
 
 [B,L] = bwboundaries(bw,'noholes');
-
-% Display the label matrix and draw each boundary
-%for k = 1:length(B)
-%  boundary = B{k};
-%  plot(boundary(:,2), boundary(:,1), 'w', 'LineWidth', 2)
-%end
-
 stats = regionprops(L,'Area','Centroid');
-
-
 object_coords = zeros(3, 1);
 
 i = 1;
-% loop over the boundaries
 for k = 1:length(B)
 
   % obtain (X,Y) boundary coordinates corresponding to label 'k'
@@ -61,3 +48,5 @@ for k = 1:length(B)
 end
 
 end %  function
+
+
