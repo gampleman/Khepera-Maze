@@ -1,6 +1,8 @@
-%% getcorners: no function description!
 function corners = getcorners(bw, threshold)
-
+%GETCORNERS Returns the corners of the maze.
+%
+%   CORNERS = GETCORNERS(BW, THRESHOLD) Take a black&white image of the maze
+%   and a threshold and returns the corners of the maze.
 round_objects = getroundobjects(bw, threshold);
 round_objects = round_objects';
 
