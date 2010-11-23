@@ -39,8 +39,22 @@ if rspeed > 0
 else
   rspeed = max(-40, rspeed);
 end
-  
-send_command(strcat('D,', num2str(round(lspeed)), ',', num2str(round(rspeed))));
+
+
+% Inteligent rounding
+%dif = round(abs(lspeed - rspeed));
+%if lspeed > rspeed
+%    rspeed = round(rspeed);
+%    lspeed = rspeed + dif;
+%else
+%    lspeed = round(lspeed);
+%    rspeed = lspeed + dif; 
+%end
+lspeed = round(lspeed);
+rspeed = round(rspeed);
+lspeed
+rspeed
+send_command(strcat('D,', num2str(lspeed), ',', num2str(rspeed)));
 read_command; 
 pause(pausetime);
 

@@ -12,9 +12,9 @@ global l_integral;
 global r_integral;
 global environment;
 
-Kp = 0.35;
-Ki = 0.1;
-Kd = 0.35;
+Kp = 1.1;
+Ki = 0;%0.05;
+Kd = 0;%0.25;
 %t = old - destination;
 %d = sqrt(t .^ 2);
 %n = [-t(2) t(1)];
@@ -38,17 +38,20 @@ alpha = beta - gamma;
 
 
 if alpha > pi
-  alpha = 2*pi - alpha;
+  alpha = alpha - 2*pi;
 end
 
 if alpha < -pi
   alpha = 2*pi + alpha;
 end
 
-alpha = -alpha;
+%alpha = -alpha;
 
-
+beta_deg = beta * 180/pi
+gamma_deg = gamma * 180/pi
 alpha_deg = alpha * 180/pi
+
+
 
 %alpha = atan2(b(1) - a(1), b(2) - a(2));
 
@@ -82,17 +85,17 @@ line([new(2), 10 * cos(-gamma) + new(2)], [new(1), 10 * sin(gamma) + new(1)], 'C
 if strcmp(environment, 'webots')
   V = 20;
 else
-  V = 1.5;
+  V = 0.7;
 end
 
 
-dt = 0.3;
+dt = 0.4;
 
 if isnan(alpha)
   alpha = 0;
 end
 
-alpha
+alpha;
 
 l_error = alpha / -pi;
 l_integral = l_integral + (l_error*dt);
@@ -109,7 +112,7 @@ previous_error = alpha;
 vl = V * (1 + l_output);
 vr = V * (1 + r_output);
 
-drivebot(vl, vr, 0.3);
+drivebot(vl, vr, 0);
 
 end %  function
 
