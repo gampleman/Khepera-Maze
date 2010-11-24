@@ -4,7 +4,7 @@ function [robot_size, transformdims, corners, I0, I3] = realworld()
   I0 = take_pic();
   transformdims = [260, 400];
   % use the ptransform transform
-  I4 = imfill(imclose(~im2bw(I0, graythresh(I0)), strel('disk',1)), 'holes');
+  %I4 = imfill(imclose(~im2bw(I0, graythresh(I0)), strel('disk',1)), 'holes');
   corners = getcorners(imfill(~im2bw(I0, graythresh(I0)), 'holes'), 0.8);%getcorners(I4, 0.8);
   
 

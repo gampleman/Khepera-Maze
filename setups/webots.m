@@ -1,6 +1,8 @@
 function [robot_size, transformdims, corners, I0] = webots()
   robot_size = 10;
   transformdims = [260, 400];
+  I0 = take_pic();
+  corners = getcorners(imfill(~im2bw(I0, graythresh(I0)), 'holes'), 0.8);
   updaterobot;
   I3 = [];
   
