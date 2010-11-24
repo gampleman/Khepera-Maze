@@ -12,7 +12,8 @@ if strcmp(environment, 'webots')
   pause(0.4);
   I = imread('/tmp/snapshot.ppm');
 else
-  unix(['mplayer tv:// -tv driver=v4l:width=640:height=480:', ...
-  'device=/dev/video0 -frames 3 -vo jpeg &> /dev/null']);
-  I = imread('00000003.jpg'); 
+  %unix(['mplayer tv:// -tv driver=v4l:width=640:height=480:', ...
+  %'device=/dev/video0 -frames 3 -vo jpeg &> /dev/null']);
+  files = dir('*.jpg');
+  I = imread(files(length(files) - 1).name);
 end

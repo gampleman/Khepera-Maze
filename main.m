@@ -35,9 +35,9 @@ dir = sign(size(I2, 1)/2 - robot(2));
 while scanline(I2, freespace, 10)
     freespace = freespace + dir;
 end
-freespace = freespace - dir;
+%freespace = freespace - dir;
 drivebot(1);
-dest = [robot(1) freespace]
+dest = [robot(1), freespace]
 
 figure(2)
 imshow(I2)

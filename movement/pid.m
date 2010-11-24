@@ -18,8 +18,9 @@ if strcmp(environment, 'webots')
   Kp = 1.0;   Ki = 0.05;  Kd = 0.1;
   V = 20;
 else
-  Kp = 1.0;   Ki = 0.01;     Kd = 0.25;
-  V = 0.6;
+  %Kp = 1;   Ki = 0.01;     Kd = 0.25;
+  Kp = 1;   Ki = 0.01;     Kd = 0.20;
+  V = 2;
 end
 
 

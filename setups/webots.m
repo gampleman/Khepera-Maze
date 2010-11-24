@@ -1,4 +1,4 @@
-function [robot_size, transformdims, corners, I0, I3] = webots()
+function [robot_size, transformdims, corners, I0, I2] = webots()
   robot_size = 10;
   transformdims = [260, 400];
   I0 = take_pic();
