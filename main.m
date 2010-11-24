@@ -19,10 +19,10 @@ else
   I3 = [];
 end
 
+updaterobot;
 % Get the maze to navigate in
 I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
 
-updaterobot;
 old_robot = robot;
 old_robot(1) = old_robot(1) - 10;
 
