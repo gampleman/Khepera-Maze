@@ -13,9 +13,9 @@ stopbot;
 
 % Prepare vars depending on environment
 if strcmp(environment, 'real world')
-  robot_size, transformdims, I0, I3 = realworld();
+  [robot_size, transformdims, corners, I0, I3] = realworld();
 else
-  robot_size, transformdims, I0 = webots();
+  [robot_size, transformdims, corners, I0] = webots();
   I3 = [];
 end
 

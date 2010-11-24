@@ -1,4 +1,4 @@
-function [robot_size, transformdims, I0, I3] = realworld()
+function [robot_size, transformdims, corners, I0, I3] = realworld()
 
   robot_size = 15;
   I0 = take_pic();
