@@ -4,11 +4,8 @@ function [robot_size, transformdims, corners, I0] = webots()
   I0 = take_pic();
   corners = getcorners(imfill(~im2bw(I0, graythresh(I0)), 'holes'), 0.8);
   robot = [0 0];
-  updaterobot;
   I3 = [];
-  
-
-
+  updaterobot;
   target = getendpoints(I1);
   start = robot;
   
