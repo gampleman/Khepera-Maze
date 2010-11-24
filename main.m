@@ -13,15 +13,15 @@ stopbot;
 
 % Prepare vars depending on environment
 if strcmp(environment, 'real world')
-  [robot_size, transformdims, corners, I0, I3] = realworld();
+  [robot_size, transformdims, corners, I0, I2, I3] = realworld();
 else
-  [robot_size, transformdims, corners, I0] = webots();
+  [robot_size, transformdims, corners, I0, I2] = webots();
   I3 = [];
 end
 
 updaterobot;
 % Get the maze to navigate in
-I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
+
 
 old_robot = robot;
 old_robot(1) = old_robot(1) - 10;
@@ -29,14 +29,14 @@ old_robot(1) = old_robot(1) - 10;
 % find the target point
 target = getendpoints(I1);
 
-drivebot(1);
+
 freespace = robot(2);
-%dir = sign(size(I2, 1)/2 - robot(2));
+dir = sign(size(I2, 1)/2 - robot(2));
 while scanline(I2, freespace, 10)
     freespace = freespace + dir;
 end
 freespace = freespace - dir;
-
+drivebot(1);
 dest = [robot(1) freespace]
 
 figure(2)

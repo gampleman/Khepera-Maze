@@ -1,4 +1,4 @@
-function [robot_size, transformdims, corners, I0] = webots()
+function [robot_size, transformdims, corners, I0, I3] = webots()
   robot_size = 10;
   transformdims = [260, 400];
   I0 = take_pic();
@@ -16,4 +16,5 @@ function [robot_size, transformdims, corners, I0] = webots()
   else
    I1 = imrotate(I1, 90);
   end
+  I2 = imclose(~im2bw(I1, 0.7), strel('disk', 10));
 end %  function
