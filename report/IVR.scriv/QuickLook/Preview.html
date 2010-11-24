@@ -5,14 +5,27 @@
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title></title>
 <meta name="Generator" content="Cocoa HTML Writer">
-<meta name="CocoaVersion" content="1038.32">
+<meta name="CocoaVersion" content="1038.35">
 <style type="text/css">
-p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Courier; background-color: #dde3eb}
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Courier; background-color: #dce4eb}
 p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Courier; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Courier}
 </style>
 </head>
 <body>
-<p class="p1"><b>• Untitled</b></p>
+<p class="p1"><b>• Introduction</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>• VP. in General</b></p>
+<p class="p3">As much as we would like to make our code “environment independent”, visual processing unlike control (with a few minor exceptions for tuning) is very much different between Webots (simulator) and Khepera (real life). However there are some basic guidelines we followed in both the environments. Within the next section we would explain the common functionality in both the environments and in the next two subsection we would elaborate on the<span class="Apple-converted-space">  </span>different methods that deigned specifically for each of...</p>
+<p class="p2"><br></p>
+<p class="p1"><b>• VP. in Webots</b></p>
+<p class="p3">Webots’ virtual camera produces a relatively high quality images, the simulator does not renders any shadows and there is no change in the lighting conditions. Therefore, in order to produce a clear threshold image we could simply used the built in MATLAB function `IM2BW`, which converts a colour image to a grayscale image using a threshold, using a constant value for our image thresholding. Our experiments shown that the optimal threshold for the Webots environment is 0.7. Using `IM2BW` by itse...</p>
+<p class="p2"><br></p>
+<p class="p1"><b>• VP. in Khepera</b></p>
+<p class="p3">The main problem with visual processing in real life for Khepera is that the quality of the image produced, especially with the hardware we had access to, is very low, the refresh rate between frames is higher than in Webots, the lighting conditions are vary which affect the shadows over the maze. The result of the shortfalls specified above is that much more pre-processing intensive to produce a clean thresholded image of the arena. Since it is not possible to find an optimal threshold for the ...</p>
+<p class="p2"><br></p>
+<p class="p1"><b>• Control</b></p>
 <p class="p2"><br></p>
 <p class="p2"><br></p>
 </body>

@@ -1,0 +1,9 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Optima-Regular;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\fi560\sl288\slmult1\sb160\ql\qnatural\pardirnatural
+
+\f0\fs26 \cf0 The main problem with visual processing in real life for Khepera is that the quality of the image produced, especially with the hardware we had access to, is very low, the refresh rate between frames is higher than in Webots, the lighting conditions are vary which affect the shadows over the maze.\
+The result of the shortfalls specified above is that much more pre-processing intensive to produce a clean thresholded image of the arena. Since it is not possible to find an optimal threshold for the image as we did with Webots we used `GRAYTHRESH`, another MATLAB built in function that automatically finds the global threshold of a given image. Lastly, we had to use `IMFILL` in order to fill the holes/noise in the thresholded image.\
+In real life we could not use the same method as we used above for Webots in order to accurately locate the location of the robot. The way we locate the robot is by first taking an image of the maze without the robot and than an image with the robot and subtracting one out of the other. We can assume that the largest object in the new image would be our robot and so we can find the centre of this object. \
+However it tuned out to be quite tricky to locate the robot while it is moving or the simulation began. }

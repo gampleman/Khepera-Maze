@@ -1,0 +1,8 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Optima-Regular;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\fi560\sl288\slmult1\sb160\ql\qnatural\pardirnatural
+
+\f0\fs26 \cf0 Webots\'92 virtual camera produces a relatively high quality images, the simulator does not renders any shadows and there is no change in the lighting conditions. Therefore, in order to produce a clear threshold image we could simply used the built in MATLAB function `IM2BW`, which converts a colour image to a grayscale image using a threshold, using a constant value for our image thresholding. Our experiments shown that the optimal threshold for the Webots environment is 0.7.\
+Using `IM2BW` by itself introduced a new problem. The round objects in the original image where not completely round any more in our new thresholded grayscale image. We solved that by using another two built in MATLAB functions, `IMCLOSE` and `STREL`. `STREL`, is another built in MATLAB function which creates a morphological structuring element. We created a flat disk shape element using `STREL` and provided it to the `IMCLOSE` function in order to preform the closing using this structure. At last, by combining those three functions together as: `imclose(~im2bw(Image, 0.7), strel('disk', 10));` we produced a clean threshold image of our maze.\
+We found that the image capture by the virtual camera is even good enough In order to find the accurate location of the robot by thresholding the image according to the true robot colour.}
