@@ -8,13 +8,6 @@ function object_coords = getroundobjects(bw, threshold)
 % remove all object containing fewer than 30 pixels
 bw = bwareaopen(bw,30);
 
-% fill a gap 
-%se = strel('disk',2);
-%bw = imclose(bw,se);
-
-% fill any holes, so that regionprops can be used to estimate
-% the area enclosed by each of the boundaries
-%bw = imfill(bw,'holes');
 
 [B,L] = bwboundaries(bw,'noholes');
 stats = regionprops(L,'Area','Centroid');
@@ -37,7 +30,7 @@ for k = 1:length(B)
   metric = 4*pi*area/perimeter^2;
 
 
-  % mark objects above the threshold with a black circle
+
   if metric > threshold
     areas = object_coords(3, :);
     centroid = stats(k).Centroid;

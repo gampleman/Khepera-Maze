@@ -19,7 +19,7 @@ P = esthomog(UV,XY,4);    % estimate homography mapping UV to XY
 % get input image and sizes
 
 [IR,IC, D]=size(inimage);
-%dims = UV(3, :);
+
 outimage=zeros(height, width, 3);   % destination image
 v=zeros(3,1);
 

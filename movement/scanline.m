@@ -1,17 +1,13 @@
-function not_free = scanline(I, lineindex, robot_size, dimension)
+function not_free = scanline(I, lineindex, robot_size)
+% NOT_FREE = SCANLINE(INPUT_IMAGE, COLUMN, SPACE_REQUIRED)
+%  Scans the center region of the image if the SPACE_REQUIRED number of columns
+%  around COLUMN are free of obstacles.
 [w h] = size(I);
 
+margin = 32;
+a = w - margin;
+free_after = sum(I(margin:a, round(lineindex + robot_size))) == 0;
+free_before = sum(I(margin:a, round(lineindex - robot_size))) == 0;
 
-if dimension == 2
-  margin = 32;
-  a = w - margin;
-  free_after = sum(I(margin:a, round(lineindex + robot_size))) == 0;
-  free_before = sum(I(margin:a, round(lineindex - robot_size))) == 0;
-else
-  margin = 60;
-  a = h - margin;
-  free_after = sum(I(round(lineindex + robot_size), margin:a)) == 0;
-  free_before = sum(I(round(lineindex - robot_size), margin:a)) == 0;
-end
 not_free = ~(free_before && free_after);
 end % function

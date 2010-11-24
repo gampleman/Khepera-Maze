@@ -2,7 +2,7 @@ function I = take_snap()
 %TAKE_SNAP Return an image of the scene. 
 %
 %   I = TAKESNAP() Depends on the enviroment the function returns an image 
-%   from webot(simulator) or khepera(real world).
+%   from webot(simulator) or webcam(real world).
 global environment;
 
 if strcmp(environment, 'webots')

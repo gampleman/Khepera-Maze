@@ -1,5 +1,5 @@
 function drivebot(lspeed, varargin)
-%DRIVEBOT Move the robot through the maze.
+% DRIVEBOT an abstraction over the level send_command
 %
 %   DRIVEBOT(Left speed, right speed, pause) Takes a different speed for
 %   each wheel. This function can be used to turn the robot for a certain

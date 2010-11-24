@@ -1,8 +1,9 @@
-function pid(old, new, destination)
+function pid(old, new, destination, dt)
 %   PID   implements PID cotnrol for the robot
-%      PID(old, new, dimension, direction)
+%      PID(POSITION_LAST_FRAME, POSITION_THIS_FRAME, DESTINATION, TIME_BETWEEN_FRAMES)
 % 
-%   Long description
+%   PID control attempts to minimize the angle between the current 
+%   heading and `destination` by driving the robot
 %   
 %   Created by Jakub Hampl on 2010-11-16.
 
@@ -12,100 +13,49 @@ global l_integral;
 global r_integral;
 global environment;
 
+% setup constants based on environment
 if strcmp(environment, 'webots')
-  Kp = 1.0;
-  Ki = 0.05;
-  Kd = 0.25;
-  
+  Kp = 1.0;   Ki = 0.05;  Kd = 0.25;
   V = 20;
 else
-  Kp = 1.0;
-  Ki = 0;
-  Kd = 0.1;
-  
+  Kp = 1.0;   Ki = 0;     Kd = 0.1;
   V = 0.7;
 end
 
-%t = old - destination;
-%d = sqrt(t .^ 2);
-%n = [-t(2) t(1)];
-%ac = new - old;
-%b = ac .* n;
-%b = abs(sum(ac .* n)) %sqrt(sum(b .^2))
-%b = norm(cross(old - new,destination' - new)) / norm(old - new)
-a = new - old;
-b = destination - new;
 
-%alpha = acos(a*b' / ((a*a')*(b*b')));
-%a_d = alpha * 180 / pi
-%costheta = dot(a,b)/(norm(a)*norm(b));
-%alpha = atan2(a(1)*b(2)-a(1)*b(1),a(1)*b(1)+a(2)*b(2));
-%alpha = atan2(a(1) - b(1), a(2) - b(2));
+a = new - old; % heading
+b = destination - new; % desired heading
 
 beta = atan2(-a(1), a(2));
 gamma = atan2(-b(1), b(2));
-%delta = (beta - gamma) * 180/pi
 alpha = beta - gamma;
 
-
+% normalize vector to be -pi < alpha < pi
 if alpha > pi
   alpha = alpha - 2*pi;
 end
-
 if alpha < -pi
   alpha = 2*pi + alpha;
 end
-
-%alpha = -alpha;
-
-beta_deg = beta * 180/pi
-gamma_deg = gamma * 180/pi
-alpha_deg = alpha * 180/pi
-
-
-
-%alpha = atan2(b(1) - a(1), b(2) - a(2));
-
-%deg_alpha = alpha * 180/pi
-%if abs(alpha) > 0.8
-%plot(10 * cos(alpha) + new(2), 10 * sin(alpha) + new(1), 'bo');
-hold on;
-line([new(2), 10 * cos(-gamma) + new(2)], [new(1), 10 * sin(gamma) + new(1)], 'Color', 'g');
-drawnow
-%end
-
-%alpha = acos(costheta);
-%a = old(dimension) - new(dimension);
-%c = sqrt((old(1) - new(1))^2 + (old(2) - new(2))^2)
-
-%other_dimension = 3 - dimension;
-%if direction == 1
-  %alpha = pi - acos(a / c);
-%  alpha = pi - real(asin(a / c));
-%  if old(other_dimension) < new(other_dimension)
-%    alpha = alpha * -1;
-%  end
-%else
-  %alpha = acos(a / c);
-%  alpha = real(asin(a / c));
-%  if old(other_dimension) > new(other_dimension)
-%    alpha = alpha * -1;
-%  end
-%end
-
-dt = 0.4;
-
 if isnan(alpha)
   alpha = 0;
 end
 
+%beta_deg = beta * 180/pi
+%gamma_deg = gamma * 180/pi
+%alpha_deg = alpha * 180/pi
 
 
+hold on;
+line([new(2), 10 * cos(-atan2(b(1), b(2))) + new(2)], [new(1), 10 * sin(atan2(b(1), b(2))) + new(1)], 'Color', 'g');
+drawnow
+
+% pid for left wheel
 l_error = alpha / -pi;
 l_integral = l_integral + (l_error*dt);
 l_derivative = (l_error - previous_error / -pi)/dt;
 l_output = (Kp* l_error) + (Ki*l_integral) + (Kd*l_derivative);
-
+% pid for rigth wheel
 r_error = alpha / pi;
 r_integral = r_integral + (r_error*dt);
 r_derivative = (r_error - previous_error / pi)/dt;

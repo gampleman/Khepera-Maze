@@ -1,8 +1,9 @@
 function corners = getcorners(bw, threshold)
-%GETCORNERS Returns the corners of the maze.
+% GETCORNERS Returns the corners of the maze.
 %
-%   CORNERS = GETCORNERS(BW, THRESHOLD) Take a black&white image of the maze
-%   and a threshold and returns the corners of the maze.
+%   CORNERS = GETCORNERS(BW_IMAGE, ROUNDNESS_THRESHOLD) Take a black&white image of the maze
+%   and a threshold of the roundness metrice and returns the coordinates
+%   of corners of the maze.
 round_objects = getroundobjects(bw, threshold);
 round_objects = round_objects';
 

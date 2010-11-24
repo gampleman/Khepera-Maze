@@ -32,7 +32,7 @@ target = getendpoints(I1);
 drivebot(1);
 freespace = robot(2);
 %dir = sign(size(I2, 1)/2 - robot(2));
-while scanline(I2, freespace, 10, 2)
+while scanline(I2, freespace, 10)
     freespace = freespace + dir;
 end
 freespace = freespace - dir;
