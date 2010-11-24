@@ -2,81 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>10</key>
-	<dict>
-		<key>Notes</key>
-		<string></string>
-		<key>Synopsis</key>
-		<string></string>
-		<key>Text</key>
-		<string></string>
-		<key>Title</key>
-		<string>Introduction</string>
-	</dict>
-	<key>11</key>
-	<dict>
-		<key>Notes</key>
-		<string>Clear image, Size of the robot, Colours threshold.  
-
-In both the environments we had to recognise the maze, the robot and its movement over time.
-
-% Explain how roundness works. How round is your circle?, http://www.howround.com/
-
-% Find the robot current location. [different methods for real life and simulator, explain why.] 
-
-% Find the direction of the robot. What would happen if the robot freeze between frames and how did we solved it. [start driving without the PID controller and pausing for a certain time before taking a new snapshot of the arena.]
-
-% add camera names to the figure.
-
-move drivebot(1) down!
-
-test webot with different camera angles.
-
-add future research section: force the robot to freeze the moment it touches a wall/box. using the approximate  sensors.</string>
-		<key>Synopsis</key>
-		<string></string>
-		<key>Text</key>
-		<string>As much as we would like to make our code “environment independent”, visual processing unlike control (with a few minor exceptions for tuning) is very much different between Webots (simulator) and Khepera (real life). However there are some basic guidelines we followed in both the environments. Within the next section we would explain the common functionality in both the environments and in the next two subsection we would elaborate on the  different methods that deigned specifically for each of the environment.
-The first major visual processing step was creating projective transformation (Homography) between the captured image and a new coordinate system, and in the same time preserve the ratio of the original image. Projective transformation, is the process where we take X coordinates on one plane and, as the name suggest, project them to a new plane. 
-Since projective transformation does not preserve ratio we needed to give our transformation function pre-defined coordinates to project to in order to preserve the original ratio. As recognising the corners of the maze can be a tricky, we decided recognising the centre of the filled circles at the corners of the maze and use those coordinates to preserve the expected ratio.
-The pre-defined coordinates calculation is a straight forward process and can be done in various way. In our system we hard-coded the scaled manually measured coordinates the maze. In order to find the centre of the filled circles at the corners of the maze we taken the thresholded image of the maze and scanned it for the four largest objects with the highest roundness factor. 
-At last using projection transformation with our recently enquired coordinates from the image taken from the camera and our hard-coded ratio preserving coordinates we straightened the maze and minimised external noise. A visualisation of the projection transformation process can be found below.
-
-￼
-
-In both environments we choose not specifically recognise the boxes and to classify them as part of the walls instead. Our decision deriving from the fact that the robot should never cross/collide with neither a wall nor a box. The way we combine the the walls and the boxes is by using `IMCLOSE` a built in MATLAB function which performs a morphological closing, I.e. Removing small holes between objects.
-Our robot control is target-driven and so he always need to a have a target. In order to simplify the task, and the search space, we decided to introduce intermediate target until the robot reach the final goal.  
-Before the robot starts driving we scan for an opening in our thresholded maze at least by a pre-defined robot size, which also change between the environment. Once we found the x-coordinate of the beginning of the opening we combine it with the initial robot y-coordinate to get the first target and the final goal y-coordinate to get the second target. 
-The final goal is located in the same way the filled circles at the corners of the maze are located, which would be covered more deeply in the following section. The difference is the this time instead of getting largest four roundness objects, we are getting the larger roundness object after after that.</string>
-		<key>Title</key>
-		<string>VP. in General</string>
-	</dict>
-	<key>12</key>
-	<dict>
-		<key>Notes</key>
-		<string></string>
-		<key>Synopsis</key>
-		<string></string>
-		<key>Text</key>
-		<string></string>
-		<key>Title</key>
-		<string>Control</string>
-	</dict>
 	<key>13</key>
 	<dict>
 		<key>Notes</key>
 		<string></string>
 		<key>Synopsis</key>
-		<string></string>
+		<string>Introduction to Vision and Robotics Assessed Practical: Visually Guided Robot NavigationOctober 22, 20101 IntroductionThis practical develops a Matlab program that works in both the real and the Webot worlds. It uses images capture by a real or webot camera to:1. Identify a Khepera robot, the boundaries of a small maze and two obstacles. 2. Navigate the robot through the maze. 3. Accurately park the robot on top of the final target circle.You will work in pairs and must submit a joint repor...</string>
 		<key>Text</key>
 		<string>Introduction to Vision and Robotics Assessed Practical: Visually Guided Robot NavigationOctober 22, 20101 IntroductionThis practical develops a Matlab program that works in both the real and the Webot worlds. It uses images capture by a real or webot camera to:1. Identify a Khepera robot, the boundaries of a small maze and two obstacles. 2. Navigate the robot through the maze. 3. Accurately park the robot on top of the final target circle.You will work in pairs and must submit a joint report but this report must be accompanied by a short explanation of how the work was shared and how you think the (joint) mark should be distributed. 50:50 is OK if you shared the assignment fairly.You should be able to normally access the IVR lab (AT 3.01) anytime with your swipe card. You need to get and return the Kheperas from the ITO between 9-5, Monday to Friday, unless you have agreed a special arrangement with them. Use the Kheperas in the IVR lab. The cameras will generally be available in the lab - do not take them elsewhere! There are a limited number of Khepera robots and arenas, so you cannot borrow one for more than 24 consecutive hours.You can use Matlab and Webots at any time on other DICE machines, but there are license number limits on availability so never stay connected to the programs when you are not using them.This practical will be run in two sessions (weeks 5-7, 8-10), with approximately equal numbers of teams in each session. The assignment will be essentially identical1
 for the two sessions. (You will have to submit your code, so don’t plagiarise a first session group’s code if you’re in the second session! We’ll check the code.)2	The TaskThe overall goal is to develop an algorithm that takes images of a scene and navigates a robot from a start to a goal location. Complicating the matter will be the fact that the images will have some perspective distortion and you will not know the exact camera position from where the images were taken. The practical task involves target recognition and visual servoing and will require use of both the Webots simulator and real camera images with the Khepera robot.Figure 1a shows the map of the world within which the robot has to navigate. There are small dots in the alcoves where the Khepera starts and finishes. You could be asked to start in either of the locations and you have to navigate to the other. Note the black barriers and walls. The Khepera has to stay in the white region and not cross a black wall. There are 4 large exterior black dots that you should use for doing the homography mapping that corrects for the perspective distortion. You will want to identify these dots and estimate their image centre of mass. There are 2 smaller black dots at the start and finish positions. You can also use these smaller dots as part of the algorithm that identifies the correct dots for estimating the homography. The mazes are printed on A3 paper sheets, which can be found in the lab. There is a fine blue circle around the start and end points. Ignore this.Figure 1b shows a typical real image of the scene layout, with the Khepera in the scene. Note that there are also obstacles blocking 2 of the 3 routes from the start to the finish positions. There will always be the 2 obstacles, but they could be placed in any 2 of the three routes. Note also that you cannot see the actual centre of the base of the Khepera. You will have to find a way to estimate this position from the observed Khepera. Hint: ignoring minor projective distortions, it lies on the vertical line through the Khepera centre of mass.Figure 1c shows a typical webot world image of the scene layout, with the Khepera in the scene. Note that the real-world Khepera is bigger than shown here.What you have to do is:1. Given a random (but not unreasonable) placement of the webcam, capture an image of the scene.2. Identify the maze (using background comparison to the scene without the maze).2
-a)	b)c)Figure 1: (a) Map as seen from above, (b) Real scene 1 with map and Khepera, (c) Webot scene with map and Khepera3􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀􏰀􏰁􏰁􏰀 􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀 􏰀􏰁􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀 􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀
+a)	b)c)Figure 1: (a) Map as seen from above, (b) Real scene 1 with map and Khepera, (c) Webot scene with map and Khepera3􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀􏰀􏰁􏰁􏰀 􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀 􏰀􏰁􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀 􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀 􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀 􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀
 3. Identify the robot and obstacles (using background comparison to the maze without the robot and obstacles).4. Using visual servoing, navigate the robot to move from the start point to the finish point (small black dots) without colliding with the black barriers or the Duplo blocks obstacles.5. Servo the robot so that the final position is directly over the destination dot and within the faint circle.You must analyse the real and webot scene images for the practical. You should produce algorithms that are insensitive to small changes in the camera position and orientation. To explore the insensitivity of your algorithm, in webots, move the camera to a new position and take a new image. In the lab, move the paper sheet around and take new webcam images.Given an image, use colour and lightness to detect all of the circles and robot. Before you capture a real image, you should also capture an image of the background white box without the scene sheet or obstacles. Also capture an image of the scene with just the maze, before the robot and obstacles are added. You can mask away a small amount of the background at the edges of the image if there are highlights or shadows that give your algorithm problems.When constructing the homography, you will need to know the image and model positions of a number of points. This image shows the model positions of the impor- tant points:4
-(0.75,1.25)􏰀􏰁􏰀􏰁􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀 􏰁􏰀􏰀􏰁􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀 􏰀􏰁􏰁􏰀􏰁􏰀􏰁􏰀􏰀􏰁􏰁􏰀(1.25,3.5)(1.25,5.5)􏰁􏰀􏰁􏰀􏰁􏰀􏰁􏰀􏰀􏰁􏰀􏰁 􏰀􏰁􏰁􏰀􏰀􏰁􏰁􏰀􏰀􏰁􏰁􏰀 􏰀􏰁􏰁􏰀􏰀􏰁􏰀􏰁􏰁􏰀􏰀􏰁(0.75,7.75)(2.5,2.25)(2.5,6.75)(1.25,8.0)(2.5,3.5)(2.5,5.5)(5.0,3.25)(5.0,5.75)(7.5,3.25)(7.5,5.75)(10.0,1.0)(10.0,8.0)(10.5,1.25)75)􏰁􏰀􏰁􏰀􏰁􏰀􏰀􏰁􏰀􏰁􏰁􏰀 􏰁􏰀􏰀􏰁􏰁􏰀􏰁􏰀􏰀􏰁􏰀􏰁 􏰀􏰁􏰁􏰀􏰁􏰀􏰀􏰁􏰀􏰁􏰁􏰀(1.25,1.0)As well as the content given in lectures, you might find some of these pages from CVonline (http://homepages.inf.ed.ac.uk/rbf/CVonline) helpful: Homography:http://homepages.inf.ed.ac.uk/cgi/rbf/CVONLINE/entries.pl?TAG122Homogeneous coordinates:http://homepages.inf.ed.ac.uk/cgi/rbf/CVONLINE/entries.pl?TAG25Homography transformation:http://homepages.inf.ed.ac.uk/cgi/rbf/CVONLINE/entries.pl?TAG13663	Files You NeedYou will need these files (which can be downloaded from the IVR webpage): take_snap.m	code that allows image capture by matlab of what’s seen by the webot world cameraaddto_local_webots2010.rar	extended webot controller software for practical The addto_local_webots2010.rar file needs to be unpacked using5
+(0.75,1.25).75)(1.25,8.0)(2.5,3.5)(2.5,5.5)(5.0,3.25)(5.0,5.75)(7.5,3.25)(7.5,5.75)(10.0,1.0)(10.0,8.0)(10.5,1.25)5,7.75)5,1.0)As well as the content given in lectures, you might find some of these pages from CVonline (http://homepages.inf.ed.ac.uk/rbf/CVonline) helpful: Homography:http://homepages.inf.ed.ac.uk/cgi/rbf/CVONLINE/entries.pl?TAG122Homogeneous coordinates:http://homepages.inf.ed.ac.uk/cgi/rbf/CVONLINE/entries.pl?TAG25Homography transformation:http://homepages.inf.ed.ac.uk/cgi/rbf/CVONLINE/entries.pl?TAG13663	Files You NeedYou will need these files (which can be downloaded from the IVR webpage): take_snap.m	code that allows image capture by matlab of what’s seen by the webot world cameraaddto_local_webots2010.rar	extended webot controller software for practical The addto_local_webots2010.rar file needs to be unpacked using5
 unrar x addto_local_webots2010.rar. Move the 2 webot world files from the unrar-ed worlds folder to &lt;YOUR WEBOT FOLDER&gt;/local webots/worlds, and move the scanner and tcp_ip_camera folders from the unrar-ed controllers folder to &lt;YOUR WEBOT FOLDER&gt;/local webots/controllers. world2010.wbt is the webots world to open from the pulldown menu.4	Image Capture DetailsSix robot ‘arenas’ will be set up in the IVR lab containing high white walls. There will also be a set of A3 papers printed with the maze to place in the arenas. Place your webcam so that it can see into the arena. You can use tape to hold the camera in a fixed position on one of the camera stands.To grab an image in Webots, pull down the File" -&gt; "Take Screenshot... option. This will create a PNG image that can be loaded into Matlab. Use the left/middle/right mouse buttons to move the camera into different views of the scene. You’ll want multiple views for training your classifiers before using the robot in the scene. You should move the real or webot camera viewpoint so you get a variety of training data for the scenes.You can also capture a view of the scene from the Matlab to webots interface using the function take_snap.m. The resulting file is saved under /tmp/snapshot. The overhead camera can be moved from the scene tree and its position/rotation params can be found under \cam_bot Supervisor \children \Camera. Initially, the camera is set directly above the arena.On some machines, the captured screenshot may leave a black box where the pulldown menu was. If this is the case: 1) drag the webot window corner to make the panel larger, 2) use the right mouse button to drag the scene so it is not covered by the pulldown panel or 3) write your program to not use the leftmost portion of the webot images.5	Writing the reportThe report should be a concise description of what you did, why, and what happened. The entire report should be no more than 4000 words (excluding appendices). It should contain the following sections:1. Introduction: an overview of the main ideas used in your approach.6
 2. Methods: Explain the vision and robotic techniques that you used. Then give a functional outline of how these ideas were implemented and the structure of your code. Include your full, commented, code in an Appendix. Do not print any code supplied from the IVR web pages. Explain how each part of it is meant to work. Where suitable, justify your decisions, e.g. why you used one method rather than another, what you tried that didn’t work as expected, etc.3. Results: You should provide some actual data, from repeated trials (with the camera or sheets in different positions) on how well your algorithm can: 1) identify scene features, 2) identify and maintain a correct trajectory through the maze and 3) park the robot at the goal. Show an example of your results for the real and webot scenes, including marked trajectories of the robot overlaying the ground floor image. Show an image of the scene where you overlay the key points found by the homography: start and end points, 4 control points, 8 grid corners, 4 obstacle corners. Well documented failure will get more marks than unsupported claims of success (well-documented success would be even better!).4. Discussion: Assess the success of your program with regard to the reported re- sults, and explain any limitations, problems or improvements you would make.5. Code: the new Matlab code that you developed for this assignment. Do not include code that you downloaded from the course web pages. Any other code that you downloaded should be recorded in the report, but does not need to be included in the appendix.Your final mark will be based on how well you explain your approach to the task and evaluate the capability of your Matlab program as well as the performance. If your navigation algorithm isn’t reliable, you should provide a sensible explanation of what you attempted and the limitations and problems in your report.6	Live DemonstrationOn Friday Nov 5, 10:00-13:00, you will have to demonstrate your program working on the Webot and real scenes. We will be placing the cameras randomly (but not maliciously). You will be allocated to a demonstration time.7
-SubmissionYour submission should be a single PDF file and should be submitted electronically by 10am Friday Nov 5. The command to use for on-line submission is:submit ai3 ivr cw1 FILENAMEwhere FILENAME is the name of your PDF file. This assignment is estimated to take 25 hours work. You must do this assignmentin pairs and assign credit in your final report. The assignment will be marked as follows:Issue	PercentageProgram Design	20% Report Clarity	20% Experimental Results (in Report)	20% Live demonstration Results (Webots)	20% Live demonstration Results (Khepera)	20%The live demonstration results will be based on a combination of scene feature detection (5%), suitable path planning (5%), collision avoiding navigation (5%) and accuracy when servoing the robot over the final target location (5%).7 PlagiarismThis assignment is expected to be in your own words and code. Short quotations (with proper, explicit attribution) are allowed, but the bulk of the submission should be your own work. Use proper citation style for all citations, whether traditional pa- per resources or web-based materials. Before submitting please acknowledge any additional sources of code that you use and ensure that your submission follows the school policy on plagiarism: http://www.inf.ed.ac.uk/teaching/plagiarism.html.8</string>
+SubmissionYour submission should be a single PDF file and should be submitted electronically by 10am Friday Nov 5. The command to use for on-line submission is:submit ai3 ivr cw1 FILENAMEwhere FILENAME is the name of your PDF file. This assignment is estimated to take 25 hours work. You must do this assignmentin pairs and assign credit in your final report. The assignment will be marked as follows:Issue	PercentageProgram Design	20% Report Clarity	20% Experimental Results (in Report)	20% Live demonstration Results (Webots)	20% Live demonstration Results (Khepera)	20%The live demonstration results will be based on a combination of scene feature detection (5%), suitable path planning (5%), collision avoiding navigation (5%) and accuracy when servoing the robot over the final target location (5%).7 PlagiarismThis assignment is expected to be in your own words and code. Short quotations (with proper, explicit attribution) are allowed, but the bulk of the submission should be your own work. Use proper citation style for all citations, whether traditional pa- per resources or web-based materials. Before submitting please acknowledge any additional sources of code that you use and ensure that your submission follows the school policy on plagiarism: http://www.inf.ed.ac.uk/teaching/plagiarism.html.8</string>
 		<key>Title</key>
 		<string>ivr-practical11011</string>
 	</dict>
@@ -95,7 +35,7 @@ An example of the robot location thresholding.</string>
 Using `IM2BW` by itself introduced a new problem. The round objects in the original image where not completely round any more in our new thresholded grayscale image. We solved that by using another two built in MATLAB functions, `IMCLOSE` and `STREL`. `STREL`, is another built in MATLAB function which creates a morphological structuring element. We created a flat disk shape element using `STREL` and provided it to the `IMCLOSE` function in order to preform the closing using this structure. At last, by combining those three functions together as: `imclose(~im2bw(Image, 0.7), strel('disk', 10));` we produced a clean threshold image of our maze.
 We found that the image capture by the virtual camera is even good enough In order to find the accurate location of the robot by thresholding the image according to the true robot colour.</string>
 		<key>Title</key>
-		<string>VP. in Webots</string>
+		<string>Recovered File [15]</string>
 	</dict>
 	<key>17</key>
 	<dict>
@@ -118,36 +58,14 @@ The result of the shortfalls specified above is that much more pre-processing in
 In real life we could not use the same method as we used above for Webots in order to accurately locate the location of the robot. The way we locate the robot is by first taking an image of the maze without the robot and than an image with the robot and subtracting one out of the other. We can assume that the largest object in the new image would be our robot and so we can find the centre of this object. 
 However it tuned out to be quite tricky to locate the robot while it is moving or the simulation began. </string>
 		<key>Title</key>
-		<string>VP. in Khepera</string>
-	</dict>
-	<key>3</key>
-	<dict>
-		<key>Notes</key>
-		<string></string>
-		<key>Synopsis</key>
-		<string></string>
-		<key>Text</key>
-		<string></string>
-		<key>Title</key>
-		<string>Untitled</string>
-	</dict>
-	<key>4</key>
-	<dict>
-		<key>Notes</key>
-		<string></string>
-		<key>Synopsis</key>
-		<string></string>
-		<key>Text</key>
-		<string></string>
-		<key>Title</key>
-		<string>IVR.scriv</string>
+		<string>Recovered File [17]</string>
 	</dict>
 	<key>5</key>
 	<dict>
 		<key>Notes</key>
 		<string></string>
 		<key>Synopsis</key>
-		<string></string>
+		<string>&lt;?xml version="1.0" encoding="UTF-8"?&gt; &lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt; &lt;plist version="1.0"&gt; &lt;dict/&gt; &lt;/plist&gt; </string>
 		<key>Text</key>
 		<string>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
@@ -158,23 +76,12 @@ However it tuned out to be quite tricky to locate the robot while it is moving o
 		<key>Title</key>
 		<string>BinderStrings</string>
 	</dict>
-	<key>6</key>
-	<dict>
-		<key>Notes</key>
-		<string></string>
-		<key>Synopsis</key>
-		<string></string>
-		<key>Text</key>
-		<string></string>
-		<key>Title</key>
-		<string>QuickLook</string>
-	</dict>
 	<key>7</key>
 	<dict>
 		<key>Notes</key>
 		<string></string>
 		<key>Synopsis</key>
-		<string></string>
+		<string>• Untitled   </string>
 		<key>Text</key>
 		<string>• Untitled
 
@@ -183,23 +90,12 @@ However it tuned out to be quite tricky to locate the robot while it is moving o
 		<key>Title</key>
 		<string>Preview</string>
 	</dict>
-	<key>8</key>
-	<dict>
-		<key>Notes</key>
-		<string></string>
-		<key>Synopsis</key>
-		<string></string>
-		<key>Text</key>
-		<string></string>
-		<key>Title</key>
-		<string>Thumbnail</string>
-	</dict>
 	<key>9</key>
 	<dict>
 		<key>Notes</key>
 		<string></string>
 		<key>Synopsis</key>
-		<string></string>
+		<string>&lt;?xml version="1.0" encoding="UTF-8"?&gt; &lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt; &lt;plist version="1.0"&gt; &lt;dict&gt;  &lt;key&gt;.lockedInPlace&lt;/key&gt;  &lt;false/&gt;  &lt;key&gt;binderSelection&lt;/key&gt;  &lt;array&gt;   &lt;integer&gt;1&lt;/integer&gt;  &lt;/array&gt;  &lt;key&gt;binderSplitFrames&lt;/key&gt;  &lt;array&gt;   &lt;string&gt;{{0, 0}, {130, 550}}&lt;/string&gt;   &lt;string&gt;{{131, 0}, {615, 550}}&lt;/string&gt;  &lt;/array&gt;  &lt;key&gt;binderState&lt;/key&gt;  &lt;array&gt;   &lt;integer&gt;0&lt;/integer&gt;  &lt;/array&gt;  &lt;key&gt;closedSuccessfully&lt;...</string>
 		<key>Text</key>
 		<string>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;

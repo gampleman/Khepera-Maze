@@ -1,6 +1,6 @@
-function outimage = jacobean(inimage, width, height, XY)
-%   JACOBEAN   Does this bizzaro transfrom thing.
-%     [IMAGE] = JACOBEAN(INIMAGE, UV, XY)
+function outimage = ptransform(inimage, width, height, XY)
+%   ptransform   Does this bizzaro transfrom thing.
+%     [IMAGE] = ptransform(INIMAGE, UV, XY)
 % 
 %   Documentation? You betcha.
 %   
