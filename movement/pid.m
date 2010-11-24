@@ -12,9 +12,20 @@ global l_integral;
 global r_integral;
 global environment;
 
-Kp = 1.1;
-Ki = 0;%0.05;
-Kd = 0;%0.25;
+if strcmp(environment, 'webots')
+  Kp = 1.0;
+  Ki = 0.05;
+  Kd = 0.25;
+  
+  V = 20;
+else
+  Kp = 1.0;
+  Ki = 0;
+  Kd = 0.1;
+  
+  V = 0.7;
+end
+
 %t = old - destination;
 %d = sqrt(t .^ 2);
 %n = [-t(2) t(1)];
@@ -58,9 +69,9 @@ alpha_deg = alpha * 180/pi
 %deg_alpha = alpha * 180/pi
 %if abs(alpha) > 0.8
 %plot(10 * cos(alpha) + new(2), 10 * sin(alpha) + new(1), 'bo');
-
+hold on;
 line([new(2), 10 * cos(-gamma) + new(2)], [new(1), 10 * sin(gamma) + new(1)], 'Color', 'g');
-
+drawnow
 %end
 
 %alpha = acos(costheta);
@@ -82,20 +93,13 @@ line([new(2), 10 * cos(-gamma) + new(2)], [new(1), 10 * sin(gamma) + new(1)], 'C
 %  end
 %end
 
-if strcmp(environment, 'webots')
-  V = 20;
-else
-  V = 0.7;
-end
-
-
 dt = 0.4;
 
 if isnan(alpha)
   alpha = 0;
 end
 
-alpha;
+
 
 l_error = alpha / -pi;
 l_integral = l_integral + (l_error*dt);
