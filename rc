@@ -1,4 +1,6 @@
-% Setup some global state
+function rc()
+
+
 global environment;
 global previous_error;
 global l_integral;
@@ -30,21 +32,6 @@ old_robot(1) = old_robot(1) - 10;
 target = getendpoints(I1);
 
 
-freespace = robot(2);
-dir = sign(size(I2, 1)/2 - robot(2));
-while scanline(I2, freespace, 10)
-    freespace = freespace + dir;
-end
-freespace = freespace + dir*robot_size*2;
-drivebot(2);
-dest = [robot(1), freespace]
-
-[h w] = size(I2);
-h/2
-target(1)
-shift = sign(h/2 - target(1)) * robot_size * 1.5; 
-
-% everybody likes pictures, right?
 f = figure(2);
 imshow(I2)
 drawnow
@@ -53,14 +40,14 @@ plot(dest(2), dest(1), 'ro');
 plot(freespace, target(1) + shift, 'ro');
 plot(target(2), target(1), 'ro');
 
+set(f, 'ButtonDownFcn', @click);
+    function click(varargin)
+        pt = get(f, 'CurrentPoint'); 
+        drivetopoint
+        stopbot
+    end
 
 
 
 
-% ready...set...go!
-drivetopoint
-dest = [target(1) + shift freespace]
-drivetopoint
-dest = target'
-drivetopoint
-stopbot;
+end

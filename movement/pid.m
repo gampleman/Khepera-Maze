@@ -15,11 +15,12 @@ global environment;
 
 % setup constants based on environment
 if strcmp(environment, 'webots')
-  Kp = 1.0;   Ki = 0.05;  Kd = 0.1;
+  %Kp = 1.0;   Ki = 0.04;  Kd = 0.1;
+  Kp = 2;   Ki = 0.03;     Kd = 1.6;
   V = 20;
 else
-  %Kp = 1;   Ki = 0.01;     Kd = 0.25;
-  Kp = 1;   Ki = 0.01;     Kd = 0.20;
+  Kp = 2;   Ki = 0.03;     Kd = 1.6;
+  %Kp = 1.6;   Ki = 0.01;     Kd = 0.25;
   V = 2;
 end
 

@@ -52,8 +52,6 @@ end
 %end
 lspeed = round(lspeed);
 rspeed = round(rspeed);
-lspeed
-rspeed
 send_command(strcat('D,', num2str(lspeed), ',', num2str(rspeed)));
 read_command; 
 pause(pausetime);

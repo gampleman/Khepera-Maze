@@ -1,6 +1,6 @@
 function [robot_size, transformdims, corners, I0, I2, I3] = realworld()
   
-  robot_size = 20;
+  robot_size = 10;
   I0 = take_pic();
   transformdims = [260, 400];
   % use the ptransform transform
